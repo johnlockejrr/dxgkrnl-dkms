@@ -29,7 +29,7 @@ install_dependencies() {
     elif [[ "$LINUX_DISTRO" == *"archlinux"* ]]; then
         pacman -Sy;
         NEED_TO_INSTALL=${NEED_TO_INSTALL//linux-headers-*/linux-headers}
-        pacman --noconfirm -S $NEED_TO_INSTALL;
+        pacman --noconfirm -S --needed $NEED_TO_INSTALL;
     else
         >&2 echo "Fatal: The system distro is unsupported";
         >&2 echo "If your system is based on 'Debian', 'Fedora' or 'ArchLinux', please report this issue with the following information.";
