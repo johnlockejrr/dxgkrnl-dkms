@@ -26,10 +26,13 @@ install_dependencies() {
         apt install -y $NEED_TO_INSTALL;
     elif [[ "$LINUX_DISTRO" == *"fedora"* ]]; then
         yum -y install $NEED_TO_INSTALL;
-    elif [[ "$LINUX_DISTRO" == *"archlinux"* ]]; then
+    elif [[ "$LINUX_DISTRO" == *"archlinux"* && "$LINUX_DISTRO" == *"manjaro"* ]]; then
         pacman -Sy;
-        NEED_TO_INSTALL=${NEED_TO_INSTALL//linux-headers-*/linux-headers}
-        pacman --noconfirm -S --needed $NEED_TO_INSTALL;
+        if [[ "$NEED_TO_INSTALL" == *"linux-headers"* ]]; then
+            NEED_TO_INSTALL=${NEED_TO_INSTALL//linux-headers-*/linux-headers}
+            pacman --noconfirm -S --needed $(pacman -Q | awk '{print $1}' | grep -E '^linux[0-9]+|linux-(zen|hardened|rt|rt-lts)' | grep -Ev headers | sed 's/$/-headers/') $NEED_TO_INSTALL
+        else
+            pacman --noconfirm -S --needed $NEED_TO_INSTALL;
     else
         >&2 echo "Fatal: The system distro is unsupported";
         >&2 echo "If your system is based on 'Debian', 'Fedora' or 'ArchLinux', please report this issue with the following information.";
