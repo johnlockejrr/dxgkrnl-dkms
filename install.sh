@@ -26,7 +26,7 @@ install_dependencies() {
         apt install -y $NEED_TO_INSTALL;
     elif [[ "$LINUX_DISTRO" == *"fedora"* ]]; then
         yum -y install $NEED_TO_INSTALL;
-    elif [[ "$LINUX_DISTRO" == *"archlinux"* && "$LINUX_DISTRO" == *"manjaro"* ]]; then
+    elif [[ "$LINUX_DISTRO" == *"archlinux"* || "$LINUX_DISTRO" == *"manjaro"* ]]; then
         pacman -Sy;
         if [[ "$NEED_TO_INSTALL" == *"linux-headers"* ]]; then
             NEED_TO_INSTALL=${NEED_TO_INSTALL//linux-headers-*/linux-headers}
